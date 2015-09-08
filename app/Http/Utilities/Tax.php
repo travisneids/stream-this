@@ -11,4 +11,9 @@ class Tax
 
     protected static $local = .008;
 
+    public static function all()
+    {
+        return static::$state + static::$city + static::$local;
+    }
+
 }

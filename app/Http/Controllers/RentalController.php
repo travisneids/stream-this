@@ -51,7 +51,10 @@ class RentalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = $this->customer->find($request->get('customer_id'));
+        $customer->movies()->attach(explode(",", $request->get('rental_ids')));
+        flash()->overlay('Success!', 'Rental transaction completed successfully.');
+        return redirect('/');
     }
 
     /**

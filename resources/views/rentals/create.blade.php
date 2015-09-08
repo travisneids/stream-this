@@ -1,3 +1,5 @@
+@inject('taxes', 'App\Http\Utilities\Tax')
+
 @extends('layout')
 
 @section('content')
@@ -8,7 +10,7 @@
                 <h4 class="panel-title">Create A Rental</h4>
             </div>
             <div class="panel-body">
-                <form action="/" method="POST">
+                {!! Form::open(['route' => 'rentals.store']) !!}
                     {{ csrf_field() }}
 
                     {!! Form::hidden('customer_id', null, ['id' => 'customer_id']) !!}
@@ -118,7 +120,7 @@
                                     </tr>
                                     <tr>
                                         <td class="text-right">Tax</td>
-                                        <td>$3.99</td>
+                                        <td>$ {{ $taxes::all() }}</td>
                                     </tr>
                                     <tr>
                                         <td class="text-right"><strong>Total</strong></td>
@@ -127,11 +129,11 @@
                                 </tbody>
                             </table>
                             </fieldset>
-                            <p><a class="btn btn-success btn-lg" role="button">Confirm Rental</a></p>
+                            <p><button class="btn btn-success btn-lg" type="submit">Confirm Rental</button></p>
                         </div>
                         <!-- end wizard step-3 -->
                     </div>
-                </form>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -162,7 +164,7 @@
                 $('#customers-table').DataTable();
 
                 $('#customers-table tr').click(function() {
-                    $('#customer_id').val($(this).data('id'));
+                    $('#customer_id').val($(this).data('id$ 0.078'));
                     $("#create-rental").bwizard("next");
                 });
             }
@@ -183,20 +185,24 @@
             });
 
             function summarize() {
+                var movieIds = [];
                 $.each($('#selected-rentals tbody tr'), function() {
                     var movie = '<tr><td>' + $(this).find('td.title').text() + '</td><td class="price">' + $(this).find('td.price').text() + '</td></tr>';
                     $('#summary-table > tbody').prepend(movie);
+
+                    movieIds.push($(this).data('movie-id'));
+
                 });
 
                 calculateTotal();
 
-                updateRentals();
+                updateRentals(movieIds);
             }
 
             function calculateTotal() {
                 var subtotal = 0;
                 var total = 0;
-                var tax = 3.99;
+                var taxRate = '{{ $taxes::all() }}';
                 
                 $('#summary-table td.price').each(function () {
                     subtotal += parseFloat($(this).text().replace('$',''));
@@ -204,14 +210,18 @@
 
                 $('#summary-table td.subtotal').text('$' + subtotal);
 
-                var total = subtotal + tax;
+                var taxes = subtotal * taxRate;
 
-                $('#summary-table td.total').text('$' + total);
+                var total = subtotal + taxes;
+
+                $('#summary-table td.total').text('$' + total.toFixed(2));
 
             }
 
-            function updateRentals() {
-                
+            function updateRentals(movieIds) {
+
+                $('#rental_ids').val(movieIds);
+
             }
 
         });

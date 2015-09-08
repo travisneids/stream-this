@@ -20,6 +20,11 @@ class Customer extends Model
         'phone'
     ];
 
+    public function movies()
+    {
+        return $this->belongsToMany('App\Movie');
+    }
+
     
 
 }

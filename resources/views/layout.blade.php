@@ -119,7 +119,7 @@
                             <span>Rentals</span>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="#">View Rentals</a></li>
+                            <li><a href="/rentals/create">Create New Rental</a></li>
                             <li><a href="#">View Returned Rentals</a></li>
                         </ul>
                     </li>

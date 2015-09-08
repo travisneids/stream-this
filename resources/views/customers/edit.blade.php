@@ -31,10 +31,29 @@
 
         <div class="panel panel-inverse">
             <div class="panel-heading">
-                <h4 class="panel-title">Add Rental</h4>
+                <h4 class="panel-title">Rentals</h4>
             </div>
             <div class="panel-body">
-
+                <table id="movies-table" class="table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Release Date</th>
+                            <th>Rating</th>
+                            <th>Inventory</th>
+                            <th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($movies as $movie)
+                            <tr class="clickable" data-id="{{ $movie->id }}">
+                                <td>{{ $movie->title }}</td>
+                                <td>{{ $movie->release_date }}</td>
+                                <td>{{ $movie->rating }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 
